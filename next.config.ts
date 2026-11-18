@@ -5,6 +5,8 @@ import type { NextConfig } from "next";
 const wp = new URL(process.env.WORDPRESS_URL ?? "http://workmarcojperalta.local");
 
 const nextConfig: NextConfig = {
+  // As imagens de partilha leem a fonte de assets/fonts com fs: garante que vai junto nas funções da Vercel.
+  outputFileTracingIncludes: { "/**": ["./assets/fonts/*.woff"] },
   images: {
     // Permite que <Image> do Next.js mostre imagens da biblioteca de media do WordPress.
     remotePatterns: [

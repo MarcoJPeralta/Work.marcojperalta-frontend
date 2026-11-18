@@ -17,7 +17,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const study = await getCaseStudy(slug);
-  return study ? { title: `${study.client}: ${study.title}`, description: study.excerpt } : {};
+  if (!study) return {};
+  const title = `${study.client}: ${study.title}`;
+  return {
+    title,
+    description: study.excerpt,
+    openGraph: { type: "article", title, description: study.excerpt, url: `/case-studies/${study.slug}` },
+  };
 }
 
 // Página individual. O Draft E só tem o arquivo, por isso segue o "Draft B — Journal · Single",

@@ -65,16 +65,26 @@ export type CaseStudy = {
 
 // ---------- Função base ----------
 
-async function wpFetch<T>(path: string): Promise<T> {
-  const res = await fetch(`${API}${path}`, {
-    next: { revalidate: REVALIDATE_SECONDS },
-  });
+// Erros temporários: o servidor está ocupado (o build faz muitos pedidos em paralelo e um
+// alojamento partilhado, ou o Local, só tem poucos processos PHP). Vale a pena tentar outra vez.
+const RETRY_STATUSES = new Set([429, 502, 503, 504]);
+const MAX_ATTEMPTS = 4;
 
-  if (!res.ok) {
+async function wpFetch<T>(path: string): Promise<T> {
+  for (let attempt = 1; ; attempt++) {
+    const res = await fetch(`${API}${path}`, {
+      next: { revalidate: REVALIDATE_SECONDS },
+    });
+
+    if (res.ok) return res.json() as Promise<T>;
+
+    if (RETRY_STATUSES.has(res.status) && attempt < MAX_ATTEMPTS) {
+      await new Promise((resolve) => setTimeout(resolve, 500 * 2 ** (attempt - 1))); // 0,5 s → 1 s → 2 s
+      continue;
+    }
+
     throw new Error(`WordPress respondeu ${res.status} em ${path}`);
   }
-
-  return res.json() as Promise<T>;
 }
 
 // ---------- Conversão WordPress → CaseStudy ----------
