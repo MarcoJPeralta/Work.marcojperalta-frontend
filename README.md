@@ -1,6 +1,6 @@
 # Work.marcojperalta-frontend
 
-Frontend de **[work.marcojperalta.com](https://work.marcojperalta.com)**, onde estão os case studies de Marco Peralta. É feito em Next.js (App Router) e vai buscar o conteúdo a um WordPress headless: [CMS-Marcojperalta](https://github.com/MarcoJPeralta/CMS-Marcojperalta).
+Frontend do site de case studies. É feito em Next.js (App Router) e vai buscar o conteúdo a um WordPress headless, que tem um repositório à parte (o CMS).
 
 ## Stack
 
@@ -19,7 +19,7 @@ npm run dev
 
 | Variável | Exemplo | Para quê |
 |---|---|---|
-| `WORDPRESS_URL` | `https://cms.marcojperalta.com` | Endereço do WordPress, sem barra no fim |
+| `WORDPRESS_URL` | `https://cms.example.com` | Endereço do WordPress, sem barra no fim |
 | `REVALIDATE_SECRET` | valor aleatório | Tem de ser igual a `HEADLESS_REVALIDATE_SECRET` no `wp-config.php` |
 
 ## Estrutura
@@ -39,4 +39,4 @@ src/
 
 ## Deploy
 
-Na Vercel: importa o repositório, define as duas variáveis de ambiente e aponta `work.marcojperalta.com` por CNAME.
+Na Vercel: importa o repositório, define as duas variáveis de ambiente e aponta o teu domínio para lá com um registo CNAME.
