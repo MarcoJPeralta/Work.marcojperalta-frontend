@@ -36,9 +36,9 @@ export const stats = [
 ] as const;
 
 export const beingWritten = [
-  "Unbabel, an AI translation company's marketing site",
-  "AgendaLX, Lisbon's official culture agenda",
-  "James Baroud, a rooftop-tent store in five languages",
+  "ECO, a National news website",
+  "Cololinasdeferias.pt, an expanded business to help families",
+  "Scopecraft, a personal project to help freelancers and small companies all over the world",
 ];
 
 export const author = {

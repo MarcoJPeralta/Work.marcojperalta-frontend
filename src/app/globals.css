@@ -277,6 +277,9 @@ img { max-width: 100%; height: auto; }
 .wp-block-table td {
   min-width: 90px;
   margin-right: 1rem;
+  vertical-align:top;
+  line-height: 1.4;
+  padding-bottom: .5rem;
 }
 /* =========================================================
    6. RESPONSIVO — o canvas só tem 1280px; isto é a adaptação para ecrãs pequenos
