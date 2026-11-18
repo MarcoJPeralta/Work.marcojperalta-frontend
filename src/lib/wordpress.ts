@@ -70,9 +70,20 @@ export type CaseStudy = {
 const RETRY_STATUSES = new Set([429, 502, 503, 504]);
 const MAX_ATTEMPTS = 4;
 
+// O nginx do alojamento guarda em cache as respostas da API por URL e continua a servi-las
+// depois de o conteúdo mudar (ex.: mostrava 0 artigos depois de uma importação).
+// Um parâmetro que muda a cada minuto torna o URL "novo", por isso essa cache nunca tem
+// mais de 1 minuto. Dentro do mesmo minuto o URL é igual, e o Next.js continua a
+// reaproveitar o mesmo pedido durante o build (menos carga no WordPress).
+function cacheBuster(): string {
+  return `_cb=${Math.floor(Date.now() / 60_000)}`;
+}
+
 async function wpFetch<T>(path: string): Promise<T> {
+  const url = `${API}${path}${path.includes("?") ? "&" : "?"}${cacheBuster()}`;
+
   for (let attempt = 1; ; attempt++) {
-    const res = await fetch(`${API}${path}`, {
+    const res = await fetch(url, {
       next: { revalidate: REVALIDATE_SECONDS },
     });
 
