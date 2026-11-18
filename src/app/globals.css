@@ -263,6 +263,63 @@ img { max-width: 100%; height: auto; }
 .prose .wp-block-pullquote p::before { content: "\201C"; }
 .prose .wp-block-pullquote p::after { content: "\201D"; }
 .prose img { border-radius: var(--radius-sm); }
+.prose h3 { font-weight: 500; font-size: var(--text-xl); line-height: 1.2; letter-spacing: -.01em; margin: 44px 0 14px; }
+
+/* Bloco "Details" do WordPress (<details class="wp-block-details">): um acordeão.
+   Caixa com borda, título em sans com um botão +/− à direita, e o conteúdo por baixo. */
+.prose details {
+  margin: 36px 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+.prose summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px 22px;
+  list-style: none; /* tira o triângulo do browser */
+  cursor: pointer;
+  font-family: var(--font-sans); font-size: var(--text-base); font-weight: 600; line-height: 1.4;
+  color: var(--color-text);
+  transition: background-color .15s;
+}
+.prose summary::-webkit-details-marker { display: none; } /* Safari */
+.prose summary:hover { background: var(--color-chip); }
+.prose summary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+/* Botão redondo com "+" (fechado) ou "−" (aberto), desenhado só com CSS */
+.prose summary::after {
+  content: "";
+  flex-shrink: 0; width: 30px; height: 30px;
+  border: 1px solid var(--color-line); border-radius: var(--radius-full);
+  color: var(--color-accent);
+  background:
+    linear-gradient(currentColor, currentColor) center / 12px 1.5px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 1.5px 12px no-repeat;
+  transition: transform .25s ease;
+}
+.prose details[open] > summary { border-bottom: 1px solid var(--color-line); }
+.prose details[open] > summary::after {
+  transform: rotate(180deg);
+  background:
+    linear-gradient(currentColor, currentColor) center / 12px 1.5px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 1.5px 0 no-repeat;
+}
+.prose details > :not(summary) { padding-inline: 22px; font-size: .9em; }
+.prose details > summary + * { margin-top: 20px; }
+.prose details > :last-child { margin-bottom: 22px; }
+
+/* Abrir/fechar com animação nos browsers que o suportam (Chrome/Edge recentes); os outros abrem na hora */
+@supports (interpolate-size: allow-keywords) {
+  .prose details { interpolate-size: allow-keywords; }
+  .prose details::details-content {
+    block-size: 0; overflow: clip;
+    transition: block-size .3s ease, content-visibility .3s allow-discrete;
+  }
+  .prose details[open]::details-content { block-size: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prose summary::after, .prose details::details-content { transition: none; }
+}
 .page-prose { max-width: var(--container-prose); margin: 0 auto; padding-inline: 20px; }
 
 /* AuthorCard */
