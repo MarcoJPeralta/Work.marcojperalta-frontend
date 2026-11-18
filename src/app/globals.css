@@ -274,7 +274,10 @@ img { max-width: 100%; height: auto; }
 .author img { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .author > div { flex: 1; }
 .author-tagline { font-family: var(--font-serif); font-size: var(--text-lg); line-height: 1.4; margin-bottom: 6px; }
-
+.wp-block-table td {
+  min-width: 90px;
+  margin-right: 1rem;
+}
 /* =========================================================
    6. RESPONSIVO — o canvas só tem 1280px; isto é a adaptação para ecrãs pequenos
    ========================================================= */
