@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { themeInitScript } from "@/lib/theme";
 import { site } from "@/content/site";
@@ -47,6 +48,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <SiteHeader />
         <main>{children}</main>
+        {/* Vercel Web Analytics: só envia dados em produção na Vercel; em localhost não conta visitas */}
+        <Analytics />
       </body>
     </html>
   );
