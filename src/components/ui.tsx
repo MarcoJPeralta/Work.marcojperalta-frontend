@@ -9,10 +9,21 @@ export function Eyebrow({ children, tone = "muted" }: { children: React.ReactNod
   );
 }
 
-export function Chip({ children, href, active = false }: { children: React.ReactNode; href?: string; active?: boolean }) {
+export function Chip({
+  children,
+  href,
+  active = false,
+  scroll = true,
+}: {
+  children: React.ReactNode;
+  href?: string;
+  active?: boolean;
+  /** false = navegar sem voltar ao topo da página */
+  scroll?: boolean;
+}) {
   if (href) {
     return (
-      <Link className="chip" href={href} data-active={active} aria-current={active ? "page" : undefined}>
+      <Link className="chip" href={href} scroll={scroll} data-active={active} aria-current={active ? "page" : undefined}>
         {children}
       </Link>
     );

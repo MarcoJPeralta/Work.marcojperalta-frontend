@@ -5,5 +5,5 @@ import { getCaseStudies, getCategories } from "@/lib/wordpress";
 export default async function Home() {
   const [studies, categories] = await Promise.all([getCaseStudies(), getCategories()]);
 
-  return <CaseArchive studies={studies} totalPublished={studies.length} categories={categories} />;
+  return <CaseArchive studies={studies} categories={categories} />;
 }

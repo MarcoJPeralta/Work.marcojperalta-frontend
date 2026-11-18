@@ -5,8 +5,8 @@ import { ArrowLink, Chip, Eyebrow, StatItem } from "./ui";
 import { CaseCard, CaseImage } from "./CaseCard";
 
 type Props = {
+  /** Todos os case studies publicados (o filtro só afeta a grelha "More case studies"). */
   studies: CaseStudy[];
-  totalPublished: number;
   categories: WPCategory[];
   activeCategory?: string;
 };
@@ -16,10 +16,14 @@ function withEmphasis(text: string) {
   return text.split(/\[(.+?)\]/).map((part, i) => (i % 2 ? <em key={i}>{part}</em> : part));
 }
 
-export function CaseArchive({ studies, totalPublished, categories, activeCategory }: Props) {
+export function CaseArchive({ studies, categories, activeCategory }: Props) {
   // O destaque é o artigo "fixo" (sticky) no WordPress; se não houver, o mais recente.
+  // É sempre o mesmo, com ou sem filtro, para a página não mudar acima da grelha.
   const featured = studies.find((s) => s.featured) ?? studies[0];
-  const rest = studies.filter((s) => s !== featured);
+  const rest = studies.filter(
+    (s) => s !== featured && (!activeCategory || s.categories.some((c) => c.slug === activeCategory)),
+  );
+  const totalPublished = studies.length;
 
   return (
     <>
@@ -71,12 +75,13 @@ export function CaseArchive({ studies, totalPublished, categories, activeCategor
       <section className="wrap more">
         <div className="more-head">
           <h2>More case studies</h2>
+          {/* scroll={false}: trocar de filtro não volta ao topo da página */}
           <div className="chips" role="navigation" aria-label="Filtrar">
-            <Chip href="/" active={!activeCategory}>
+            <Chip href="/" active={!activeCategory} scroll={false}>
               All
             </Chip>
             {categories.map((c) => (
-              <Chip key={c.slug} href={`/category/${c.slug}`} active={activeCategory === c.slug}>
+              <Chip key={c.slug} href={`/category/${c.slug}`} active={activeCategory === c.slug} scroll={false}>
                 {c.name === "Personal projects" ? "Personal" : c.name}
               </Chip>
             ))}
@@ -90,7 +95,7 @@ export function CaseArchive({ studies, totalPublished, categories, activeCategor
             ))}
           </div>
         ) : (
-          <p className="muted">No other case studies here yet.</p>
+          <p className="muted">No other case studies in this category yet.</p>
         )}
 
         <div className="being-written">

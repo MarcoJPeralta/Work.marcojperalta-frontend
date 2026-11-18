@@ -19,9 +19,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryArchive({ params }: Props) {
   const { slug } = await params;
-  const [all, filtered, categories] = await Promise.all([getCaseStudies(), getCaseStudies(slug), getCategories()]);
+  const [studies, categories] = await Promise.all([getCaseStudies(), getCategories()]);
 
   if (!categories.some((c) => c.slug === slug)) notFound();
 
-  return <CaseArchive studies={filtered} totalPublished={all.length} categories={categories} activeCategory={slug} />;
+  return <CaseArchive studies={studies} categories={categories} activeCategory={slug} />;
 }
